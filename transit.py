@@ -4,6 +4,8 @@ from datetime import datetime
 import openpyxl
 from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl.styles import Font, Border, Side
+from users import User
+import getpass
 
 namesList = []
 dniList = []
@@ -11,11 +13,65 @@ teorico = []
 practico = []
 guardado = ""
 
+def UsrEnter():
+    try:
+        leave = " "
+        print("\nBienvenido al sistema de Almirante Brown.\n")
+        print("\n  1. Iniciar sesión.\n  2. Crear cuenta.\n  3. Salir del sistema.")
+        while True:
+            if keyboard.is_pressed('1'):
+                while True:
+                    his_id = input("\nIngrese su nombre de usuario: ")
+                    his_pass = getpass.getpass(prompt="Ingrese su contraseña: ")
+                    if his_id != "" and User.user_exists(his_id, his_pass):
+                        leave = MenuPrincipal()
+                        break
+                    else:
+                        print("Nombre de usuario o contraseña incorrectos.")
+                        continue
+            elif keyboard.is_pressed('2'):
+                createUsr()
+                break
+            elif keyboard.is_pressed('3'):
+                raise KeyboardInterrupt      
+            if leave == "y":
+                break
+            else:
+                continue
+    except KeyboardInterrupt:
+        print("\nUsted ha salido del sistema de Almirante Brown. Vuelva pronto")
+
+
+def createUsr():
+    try:
+        while True:
+            usrId = input("\n\n\nNombre de usuario: ")
+            usrPass = input("Contraseña: ")
+            usrName = input("Nombre: ")
+            usrSurname = input("Apellido: ")
+            usrRole = input("Eres inspector? ").lower()
+            if usrRole == "si" or usrRole == "y":
+                usrRole = "admin"
+            else:
+                usrRole = " "
+
+            newuser = User(usrId, usrPass, usrName, usrSurname, usrRole)
+            check_if_saved = newuser.save_usr()
+            if check_if_saved:
+                print("Usuario creado con éxito!")
+                break
+    except KeyboardInterrupt:
+        MenuPrincipal()
+    except:
+        print("\n\nHa ocurrido un error.")
+        leave = "y"
+        return leave
+        
 
 def MenuPrincipal():
-    print("Bienvenido al menú principal del sistema de Almirante Brown.\nElija la opción que desee.")
+    print("\n\nBienvenido al menú principal del sistema de Almirante Brown.\n\nElija la opción que desee.")
     try:
-        print("1. Sector de Carga de Trámites.\n2. Estadisticas del día.\n3. Salir")
+        print("   1. Sector de Carga de Trámites.\n   2. Estadisticas del día.\n   3. Salir")
         while True:    
             if keyboard.is_pressed('1'):
                 Transit()
@@ -27,7 +83,8 @@ def MenuPrincipal():
                 continue
             elif keyboard.is_pressed('3'):
                 print("\nVuelva pronto!")
-                break
+                leave = "y"
+                return leave
             
     except:
         print("Hubo un error! Estamos trabajando en ello.")
@@ -128,6 +185,8 @@ def Transit():
                 continue
     except UnboundLocalError:
         print("Vuelva pronto!")
+
+
 def stats():
     print("\n\n\n\nProximamente...")
 
@@ -151,4 +210,4 @@ def saved(dia, newdf):
     guardado = "yes"
 
        
-MenuPrincipal()
+UsrEnter()
