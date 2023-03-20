@@ -24,7 +24,8 @@ def UsrEnter():
                     his_id = input("\nIngrese su nombre de usuario: ")
                     his_pass = getpass.getpass(prompt="Ingrese su contraseña: ")
                     if his_id != "" and User.user_exists(his_id, his_pass):
-                        leave = MenuPrincipal()
+                        usuario = User.get_usr(his_id, his_pass)
+                        leave = MenuPrincipal(usuario)
                         break
                     else:
                         print("Nombre de usuario o contraseña incorrectos.")
@@ -68,8 +69,10 @@ def createUsr():
         return leave
         
 
-def MenuPrincipal():
-    print("\n\nBienvenido al menú principal del sistema de Almirante Brown.\n\nElija la opción que desee.")
+def MenuPrincipal(usuario):
+    nombre = usuario["nombre"]
+    apellido = usuario["apellido"]
+    print(f"\n\nHola {apellido}, {nombre}. Bienvenido al sistema de Alm. Brown.\n\nElija la opción que desee.")
     try:
         print("   1. Sector de Carga de Trámites.\n   2. Estadisticas del día.\n   3. Salir")
         while True:    
