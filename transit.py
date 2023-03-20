@@ -46,23 +46,23 @@ def UsrEnter():
 def createUsr():
     try:
         while True:
-            usrId = input("\n\n\nNombre de usuario: ")
+            print(" ")
+            usrId = input("\n\nNombre de usuario: ")
             usrPass = input("Contraseña: ")
             usrName = input("Nombre: ")
             usrSurname = input("Apellido: ")
-            usrRole = input("Eres inspector? ").lower()
-            if usrRole == "si" or usrRole == "y":
-                usrRole = "admin"
-            else:
-                usrRole = " "
-
-            newuser = User(usrId, usrPass, usrName, usrSurname, usrRole)
+            newuser = User(usrId, usrPass, usrName, usrSurname)
             check_if_saved = newuser.save_usr()
             if check_if_saved:
-                print("Usuario creado con éxito!")
+                print("\nUsuario creado con éxito!")
+                UsrEnter()
                 break
     except KeyboardInterrupt:
-        MenuPrincipal()
+        print(" ")
+        UsrEnter()
+    except TypeError:
+        print(" ")
+        UsrEnter()
     except:
         print("\n\nHa ocurrido un error.")
         leave = "y"
@@ -70,8 +70,8 @@ def createUsr():
         
 
 def MenuPrincipal(usuario):
-    nombre = usuario["nombre"]
-    apellido = usuario["apellido"]
+    nombre = usuario["Name"]
+    apellido = usuario["Surname"]
     print(f"\n\nHola {apellido}, {nombre}. Bienvenido al sistema de Alm. Brown.\n\nElija la opción que desee.")
     try:
         print("   1. Sector de Carga de Trámites.\n   2. Estadisticas del día.\n   3. Salir")

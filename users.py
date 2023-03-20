@@ -4,7 +4,7 @@ import mysql.connector as mysql
 mydb = mysql.connect(
     host="localhost",
     user="root",
-    password="password",
+    password="1234",
     database="nueva_database"
 )
 
@@ -39,8 +39,8 @@ class User:
     def user_exists(id, password):
         users = User.load_users()
         for user in users:
-            username = user["username"]
-            pw = user["pass"]
+            username = user["Username"]
+            pw = user["Password"]
             if username == id and pw == password:
                 return True
         else:
@@ -50,7 +50,7 @@ class User:
     def check_for_usrname(id):
         users = User.load_users()
         for user in users:
-            if user["id"] == id:
+            if user["Username"] == id:
                 return False
         return True
 
@@ -63,7 +63,7 @@ class User:
                 usersfile.write(user_str + '\n')"""
             
             #MYSQL
-            sql = "INSERT INTO usuarios (username, pass, nombre, apellido) VALUES (%s, %s, %s, %s)"
+            sql = "INSERT INTO Usuarios (Username, Password, Name, Surname) VALUES (%s, %s, %s, %s)"
             val = (self.id, self.password, self.name, self.surname)
             myCursor.execute(sql, val)
             mydb.commit()
@@ -75,8 +75,8 @@ class User:
     def get_usr(id, password):
         users = User.load_users()
         for user in users:
-            username = user["username"]
-            pw = user["pass"]
+            username = user["Username"]
+            pw = user["Password"]
             if username == id and pw == password:
                 return user
         else:
